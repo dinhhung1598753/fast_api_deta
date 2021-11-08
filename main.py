@@ -144,5 +144,5 @@ async def recWebHook(req: Request):
         sender_text = body['message']['text']
         send_mess(id,mess="mèo meo meo mèo meo")
     except:
-        pass
+        print(123)
     # send_mess(123,mess="mèo meo meo mèo meo")
