@@ -138,6 +138,8 @@ def send_mess(chat_id,mess:str):
 @app.post("/webhook")
 async def recWebHook(req: Request):
     body = await req.json()
-    id = body['message']['chat']['id']
-    sender_text = body['message']['text']
-    send_mess(id,mess="mèo meo meo mèo meo")
+    print(body)
+    # id = body['message']['chat']['id']
+    # sender_text = body['message']['text']
+    # send_mess(id,mess="mèo meo meo mèo meo")
+    send_mess(123,mess="mèo meo meo mèo meo")
