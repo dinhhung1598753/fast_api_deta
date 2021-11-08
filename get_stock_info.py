@@ -12,22 +12,7 @@ def get_info(name):
         x = json.loads(r.text)
         result = []
         for i in x:
-            result.append(f"mã cổ phiếu:{i['sym']}\
-            Tổng khối lượng giao dịch: {i['lot']}\
-            Giá tham chiếu:{i['r']}\
-            Giá Trần:{i['c']}\
-            Giá sàn:{i['f']}\
-            Giá Cao Nhất:{i['highPrice']}\
-            Giá Thấp Nhất:{i['lowPrice']}\
-            Bên mua:\
-            Giá 1:{i['g1']}\
-            Giá 2:{i['g2']}\
-            Giá 3:{i['g3']}\
-            Bên bán:\
-            Giá 1:{i['g4']}\
-            Giá 2:{i['g5']}\
-            Giá 3:{i['g6']}\
-                ")
+            result.append(f"Mã cổ phiếu:{i['sym']} \n Tổng khối lượng giao dịch: {i['lot']} \n Giá tham chiếu:{i['r']}\n Giá Trần:{i['c']}\n Giá sàn:{i['f']}\n Giá Cao Nhất:{i['highPrice']}\n Giá Thấp Nhất:{i['lowPrice']}\n Bên mua:\n Giá 1:{i['g1']}\n Giá 2:{i['g2']}\n Giá 3:{i['g3']}\n Bên bán:\n Giá 1:{i['g4']}\n Giá 2:{i['g5']}\n Giá 3:{i['g6']}\n")
         return result[0]
     except:
         return f"error name :{name}"
