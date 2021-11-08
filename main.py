@@ -83,6 +83,15 @@ gl_mess = ""
 
 async def send_mess(chat_id,mess:str):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    payload = json.dumps({
+        "chat_id": chat_id,
+        "text": f"chat: {chat_id} -- mes: {mess}"
+        })
+        # print(payload)
+    headers = {
+        'Content-Type': 'application/json'
+        }
+    response = requests.request("POST", url, headers=headers, data=payload)
     if chat_id == gl_chat_id and mess == gl_mess:
         return
     else:
