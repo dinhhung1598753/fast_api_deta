@@ -2,7 +2,7 @@ from fastapi import FastAPI, WebSocket, Request
 from fastapi.responses import HTMLResponse
 import requests
 import time
-from get_stock_info import get_info
+from get_stock_info import check_limit_price, get_info
 import asyncio
 import json
 
@@ -83,7 +83,8 @@ def send_mess(chat_id,mess:str):
         stock_name = mess.replace("checking", "")
         mess = get_info(stock_name)
     elif "limit" in mess:
-        mess = "i'm checking"
+        txt = mess.split(" limit ")
+        mess = check_limit_price(txt[1], txt[0])
     else:
         mess = "Checking Stock price: STOCK_NAME checking \n Warning price: STOCK_NAME limit your_price"
     payload = json.dumps({
