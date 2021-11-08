@@ -94,7 +94,7 @@ async def send_mess(chat_id,mess:str):
         'Content-Type': 'application/json'
         }
         response = requests.request("POST", url, headers=headers, data=payload)
-        await check_limit_price(txt[1], txt[0], chat_id)
+        # await check_limit_price(txt[1], txt[0], chat_id)
         return
         
     else:
