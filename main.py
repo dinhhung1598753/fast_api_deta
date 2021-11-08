@@ -77,33 +77,57 @@ async def send_m(websocket: WebSocket, stock_name: str):
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
+# def send_mess(chat_id,mess:str):
+#     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+#     if "checking" in mess:
+#         stock_name = mess.replace("checking", "")
+#         mess = get_info(stock_name)
+#     # elif "limit" in mess:
+#     #     txt = mess.split(" limit ")
+#     #     mess = f"Set warning {txt[0]} at price={txt[1]}"
+#     #     payload = json.dumps({
+#     #     "chat_id": chat_id,
+#     #     "text": mess
+#     #     })
+#     #     # print(payload)
+#     #     headers = {
+#     #     'Content-Type': 'application/json'
+#     #     }
+#     #     response = requests.request("POST", url, headers=headers, data=payload)
+#     #     # await check_limit_price(txt[1], txt[0], chat_id)
+#     #     return
+        
+#     else:
+#         mess = "Checking Stock price: STOCK_NAME checking \n Warning price: STOCK_NAME limit your_price"
+#     payload = json.dumps({
+#     "chat_id": chat_id,
+#     "text": mess
+#     })
+#     # print(payload)
+#     headers = {
+#     'Content-Type': 'application/json'
+#     }
+
+#     response = requests.request("POST", url, headers=headers, data=payload)
+
+
+# @app.post("/webhook")
+# async def recWebHook(req: Request):
+#     body = await req.json()
+#     id = body['message']['chat']['id']
+#     sender_text = body['message']['text']
+#     send_mess(id,mess=sender_text)
+
+    
+
 def send_mess(chat_id,mess:str):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    if "checking" in mess:
-        stock_name = mess.replace("checking", "")
-        mess = get_info(stock_name)
-    # elif "limit" in mess:
-    #     txt = mess.split(" limit ")
-    #     mess = f"Set warning {txt[0]} at price={txt[1]}"
-    #     payload = json.dumps({
-    #     "chat_id": chat_id,
-    #     "text": mess
-    #     })
-    #     # print(payload)
-    #     headers = {
-    #     'Content-Type': 'application/json'
-    #     }
-    #     response = requests.request("POST", url, headers=headers, data=payload)
-    #     # await check_limit_price(txt[1], txt[0], chat_id)
-    #     return
-        
-    else:
-        mess = "Checking Stock price: STOCK_NAME checking \n Warning price: STOCK_NAME limit your_price"
+    
     payload = json.dumps({
     "chat_id": chat_id,
     "text": mess
     })
-    # print(payload)
+    print(payload)
     headers = {
     'Content-Type': 'application/json'
     }
@@ -116,6 +140,4 @@ async def recWebHook(req: Request):
     body = await req.json()
     id = body['message']['chat']['id']
     sender_text = body['message']['text']
-    send_mess(id,mess=sender_text)
-
-    
+    send_mess(id,mess="mèo meo meo mèo meo")
