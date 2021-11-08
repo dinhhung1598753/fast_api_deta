@@ -2,8 +2,8 @@ from fastapi import FastAPI, WebSocket, Request
 from fastapi.responses import HTMLResponse
 import requests
 import time
-from get_stock_info import  get_info
-# import asyncio
+from get_stock_info import  get_info, check_limit_price
+import asyncio
 import json
 
 app = FastAPI()
@@ -77,25 +77,27 @@ async def send_m(websocket: WebSocket, stock_name: str):
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
-def send_mess(chat_id,mess:str):
+async def send_mess(chat_id,mess:str):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    
     if "checking" in mess:
         stock_name = mess.replace("checking", "")
         mess = get_info(stock_name)
-    # elif "limit" in mess:
-    #     txt = mess.split(" limit ")
-    #     mess = f"Set warning {txt[0]} at price={txt[1]}"
-    #     payload = json.dumps({
-    #     "chat_id": chat_id,
-    #     "text": mess
-    #     })
-    #     # print(payload)
-    #     headers = {
-    #     'Content-Type': 'application/json'
-    #     }
-    #     response = requests.request("POST", url, headers=headers, data=payload)
-    #     # await check_limit_price(txt[1], txt[0], chat_id)
-    #     return
+    elif "limit" in mess:
+        txt = mess.split(" limit ")
+        mess = f"Set warning {txt[0]} at price={txt[1]}"
+        print(mess)
+        payload = json.dumps({
+        "chat_id": chat_id,
+        "text": mess
+        })
+        # print(payload)
+        headers = {
+        'Content-Type': 'application/json'
+        }
+        response = requests.request("POST", url, headers=headers, data=payload)
+        await check_limit_price(txt[1], txt[0], chat_id)
+        return
         
     else:
         mess = "Checking Stock price: STOCK_NAME checking \n Warning price: STOCK_NAME limit your_price"
@@ -117,34 +119,10 @@ async def recWebHook(req: Request):
     try:
         id = body['message']['chat']['id']
         sender_text = body['message']['text']
-        send_mess(id,mess=sender_text)
+        # send_mess(id,mess=sender_text)
+
+        await send_mess(123, "GVR limit 40.90")
     except: 
         pass
     
 
-# def send_mess(chat_id,mess:str):
-#     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    
-#     payload = json.dumps({
-#     "chat_id": chat_id,
-#     "text": mess
-#     })
-#     print(payload)
-#     headers = {
-#     'Content-Type': 'application/json'
-#     }
-
-#     response = requests.request("POST", url, headers=headers, data=payload)
-
-
-# @app.post("/webhook")
-# async def recWebHook(req: Request):
-#     body = await req.json()
-#     print(body)
-#     try:
-#         id = body['message']['chat']['id']
-#         sender_text = body['message']['text']
-#         send_mess(id,mess="mèo meo meo mèo meo")
-#     except:
-#         print(123)
-#     # send_mess(123,mess="mèo meo meo mèo meo")
