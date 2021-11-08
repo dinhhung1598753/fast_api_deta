@@ -84,7 +84,8 @@ def send_mess(chat_id,mess:str):
         mess = get_info(stock_name)
     elif "limit" in mess:
         txt = mess.split(" limit ")
-        mess = check_limit_price(txt[1], txt[0])
+        check_limit_price(txt[1], txt[0], chat_id)
+        mess = f"Set warning {txt[0]} at price={txt[1]}"
     else:
         mess = "Checking Stock price: STOCK_NAME checking \n Warning price: STOCK_NAME limit your_price"
     payload = json.dumps({
