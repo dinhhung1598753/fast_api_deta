@@ -32,6 +32,18 @@ async def check_limit_price(price:str, name:str, chat_id):
             r = requests.get(url)
             x = json.loads(r.text)
             last_price = float(x[0]['lastPrice'])
+            mes_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+                    
+            payload = json.dumps({
+                    "chat_id": chat_id,
+                    "text": f"last price {last_price}"
+                    })
+                    # print(payload)
+            headers = {
+                    'Content-Type': 'application/json'
+                    }
+
+            response = requests.request("POST", mes_url, headers=headers, data=payload)
             now_price = 0.0
             if i == 1:
                 now_price = last_price
