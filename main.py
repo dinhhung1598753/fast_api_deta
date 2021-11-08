@@ -4,6 +4,7 @@ import requests
 import time
 from get_stock_info import get_info
 import asyncio
+import json
 
 app = FastAPI()
 
