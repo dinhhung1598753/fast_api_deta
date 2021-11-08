@@ -77,7 +77,7 @@ async def send_m(websocket: WebSocket, stock_name: str):
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
-async def send_mess(chat_id,mess:str):
+def send_mess(chat_id,mess:str):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     if "checking" in mess:
         stock_name = mess.replace("checking", "")
@@ -116,4 +116,4 @@ async def recWebHook(req: Request):
     body = await req.json()
     id = body['message']['chat']['id']
     sender_text = body['message']['text']
-    await send_mess(id,mess=sender_text)
+    send_mess(id,mess=sender_text)
