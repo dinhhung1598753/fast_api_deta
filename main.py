@@ -1,7 +1,6 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 import time
-import schedule
 from get_stock_info import get_info
 import asyncio
 
