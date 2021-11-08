@@ -119,9 +119,9 @@ async def recWebHook(req: Request):
     try:
         id = body['message']['chat']['id']
         sender_text = body['message']['text']
-        # send_mess(id,mess=sender_text)
+        await send_mess(id,mess=sender_text)
 
-        await send_mess(123, "GVR limit 40.90")
+        # await send_mess(123, "GVR limit 40.90")
     except: 
         pass
     
