@@ -85,7 +85,17 @@ async def send_mess(chat_id,mess:str):
     elif "limit" in mess:
         txt = mess.split(" limit ")
         mess = f"Set warning {txt[0]} at price={txt[1]}"
+        payload = json.dumps({
+        "chat_id": chat_id,
+        "text": mess
+        })
+        # print(payload)
+        headers = {
+        'Content-Type': 'application/json'
+        }
+        response = requests.request("POST", url, headers=headers, data=payload)
         await check_limit_price(txt[1], txt[0], chat_id)
+        return
         
     else:
         mess = "Checking Stock price: STOCK_NAME checking \n Warning price: STOCK_NAME limit your_price"
@@ -93,7 +103,7 @@ async def send_mess(chat_id,mess:str):
     "chat_id": chat_id,
     "text": mess
     })
-    print(payload)
+    # print(payload)
     headers = {
     'Content-Type': 'application/json'
     }
