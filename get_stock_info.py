@@ -3,7 +3,7 @@ import json
 import asyncio
 
 
-TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA' 
+# TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA' 
 
 def get_info(name):
     # name="VHM"
