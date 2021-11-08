@@ -1,7 +1,9 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 import time
+import schedule
 from get_stock_info import get_info
+import asyncio
 
 app = FastAPI()
 
@@ -20,7 +22,7 @@ html = """
         <ul id='messages'>
         </ul>
         <script>
-            var ws = new WebSocket("wss://hif4vg.deta.dev/ws/GVR");
+            var ws = new WebSocket("ws://127.0.0.1:8000/ws/GVR");
             ws.onmessage = function(evt) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -50,10 +52,25 @@ async def get():
 @app.websocket("/ws/{stock_name}")
 async def websocket_endpoint(websocket: WebSocket, stock_name: str):
     await websocket.accept()
-    i = 0
+    # i = 0
+
+    # asyncio.get_event_loop().run_until_complete(alive())
+    await send_m(websocket, stock_name)
+
+    # asyncio.get_event_loop().run_until_complete(asyncio.wait([
+    #     send_m(websocket, stock_name)
+    # ]))
+
+#
+# async def send_mess(stock_name: str):
+#     await websocket.send_text(get_info(stock_name))
+async def send_m(websocket: WebSocket, stock_name: str):
+    i=0
     while True:
+        i+=1
         # data = await websocket.receive_text()
-        i=0
-        while True:
-            i += 1
-            await websocket.send_text(get_info(stock_name))
+        # await websocket.send_text(get_info(stock_name))
+        get_info(stock_name)
+        await websocket.send_text(f"{stock_name} --{i}")
+        await asyncio.sleep(10)
+
