@@ -72,7 +72,7 @@ async def send_m(websocket: WebSocket, stock_name: str):
         # data = await websocket.receive_text()
         # await websocket.send_text(get_info(stock_name))
         get_info(stock_name)
-        await websocket.send_text(f"{stock_name} --{i}")
+        await websocket.send_text(f"{stock_name} --{i*10}")
         # await asyncio.sleep(10)
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
