@@ -78,17 +78,18 @@ async def send_m(websocket: WebSocket, stock_name: str):
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
 message = ""
+gl_chat_id = ""
+gl_mess = ""
+
 async def send_mess(chat_id,mess:str):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    payload = json.dumps({
-        "chat_id": chat_id,
-        "text": mess
-        })
-        # print(payload)
-    headers = {
-        'Content-Type': 'application/json'
+    if chat_id == gl_chat_id and mess == gl_mess:
+        return
+    else:
+        rq = {
+            "chat_id" : chat_id,
+            "mess" : mess
         }
-    response = requests.request("POST", url, headers=headers, data=payload)
     if mess == "clear":
         message = "clear"
     else:
