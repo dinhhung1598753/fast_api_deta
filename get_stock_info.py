@@ -35,16 +35,16 @@ async def check_limit_price(price:str, name:str, chat_id):
             mes_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
             # print(last_price)
                     
-            payload = json.dumps({
-                    "chat_id": chat_id,
-                    "text": f"last price {last_price}"
-                    })
-                    # print(payload)
-            headers = {
-                    'Content-Type': 'application/json'
-                    }
+            # payload = json.dumps({
+            #         "chat_id": chat_id,
+            #         "text": f"last price {last_price}"
+            #         })
+            #         # print(payload)
+            # headers = {
+            #         'Content-Type': 'application/json'
+            #         }
 
-            response = requests.request("POST", mes_url, headers=headers, data=payload)
+            # response = requests.request("POST", mes_url, headers=headers, data=payload)
             now_price = 0.0
             if i == 1:
                 now_price = last_price
@@ -55,6 +55,17 @@ async def check_limit_price(price:str, name:str, chat_id):
                         result.append(f"Mã cổ phiếu: {i['sym']} \n Tổng khối lượng giao dịch: {i['lot']} \n Giá hiện tại: {i['lastPrice']}\n Giá tham chiếu: {i['r']}\n Giá Trần: {i['c']}\n Giá sàn: {i['f']}\n Giá Cao Nhất: {i['highPrice']}\n Giá Thấp Nhất: {i['lowPrice']}\n Bên mua:\n Giá 1: {i['g1']}\n Giá 2: {i['g2']}\n Giá 3: {i['g3']}\n Bên bán:\n Giá 1: {i['g4']}\n Giá 2: {i['g5']}\n Giá 3: {i['g6']}\n")
                     
                     mes_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+
+                    payload = json.dumps({
+                    "chat_id": chat_id,
+                    "text": f"Warning {name} price = {last_price}"
+                    })
+                    # print(payload)
+                    headers = {
+                    'Content-Type': 'application/json'
+                    }
+
+                    response = requests.request("POST", mes_url, headers=headers, data=payload)
                     
                     payload = json.dumps({
                     "chat_id": chat_id,
