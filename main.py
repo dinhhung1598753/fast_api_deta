@@ -21,7 +21,7 @@ html = """
         <ul id='messages'>
         </ul>
         <script>
-            var ws = new WebSocket("ws://127.0.0.1:8000/ws/GVR");
+            var ws = new WebSocket("ws://fastapisocket.herokuapp.com/ws/GVR");
             ws.onmessage = function(evt) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
