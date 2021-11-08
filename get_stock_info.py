@@ -1,6 +1,6 @@
 import requests
 import json
-import asyncio
+# import asyncio
 
 
 # TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA' 

@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 import requests
 import time
 from get_stock_info import  get_info
-import asyncio
+# import asyncio
 import json
 
 app = FastAPI()
@@ -73,7 +73,7 @@ async def send_m(websocket: WebSocket, stock_name: str):
         # await websocket.send_text(get_info(stock_name))
         get_info(stock_name)
         await websocket.send_text(f"{stock_name} --{i}")
-        await asyncio.sleep(10)
+        # await asyncio.sleep(10)
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
