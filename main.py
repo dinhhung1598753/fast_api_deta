@@ -82,7 +82,8 @@ def send_mess(chat_id,mess:str):
     if "checking" in mess:
         stock_name = mess.replace("checking", "")
         mess = get_info(stock_name)
-    
+    else:
+        mess = "Checking Stock price: STOCK_NAME checking \n Warning price: STOCK_NAME limit your_price"
     payload = json.dumps({
     "chat_id": chat_id,
     "text": mess
