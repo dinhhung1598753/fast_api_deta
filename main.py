@@ -79,6 +79,9 @@ TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
 def send_mess(chat_id,mess:str):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    if "checking" in mess:
+        stock_name = mess.replace("checking", "")
+        mess = get_info(stock_name)
     
     payload = json.dumps({
     "chat_id": chat_id,
@@ -97,4 +100,4 @@ async def recWebHook(req: Request):
     body = await req.json()
     id = body['message']['chat']['id']
     sender_text = body['message']['text']
-    send_mess(id,mess="mèo meo meo mèo meo")
+    send_mess(id,mess=sender_text)
