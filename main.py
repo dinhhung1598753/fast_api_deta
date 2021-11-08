@@ -2,7 +2,7 @@ from fastapi import FastAPI, WebSocket, Request
 from fastapi.responses import HTMLResponse
 import requests
 import time
-from get_stock_info import check_limit_price, get_info
+from get_stock_info import  get_info
 import asyncio
 import json
 
