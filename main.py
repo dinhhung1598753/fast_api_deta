@@ -31,6 +31,35 @@ html = """
                 message.appendChild(content)
                 messages.appendChild(message)
             };
+            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/BSR");
+            ws.onmessage = function(evt) {
+                var messages = document.getElementById('messages')
+                var message = document.createElement('li')
+                var content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/MBS");
+            ws.onmessage = function(evt) {
+                var messages = document.getElementById('messages')
+                var message = document.createElement('li')
+                var content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+            
+            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/VIC");
+            ws.onmessage = function(evt) {
+                var messages = document.getElementById('messages')
+                var message = document.createElement('li')
+                var content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+
+
+
+
             function sendMessage(event) {
                 var input = document.getElementById("messageText")
                 ws.send(input.value)
@@ -58,22 +87,15 @@ async def websocket_endpoint(websocket: WebSocket, stock_name: str):
     # asyncio.get_event_loop().run_until_complete(alive())
     await send_m(websocket, stock_name)
 
-    # asyncio.get_event_loop().run_until_complete(asyncio.wait([
-    #     send_m(websocket, stock_name)
-    # ]))
-
-#
-# async def send_mess(stock_name: str):
-#     await websocket.send_text(get_info(stock_name))
 async def send_m(websocket: WebSocket, stock_name: str):
     i=0
     while True:
         i+=1
         # data = await websocket.receive_text()
         # await websocket.send_text(get_info(stock_name))
-        get_info(stock_name)
+        await get_info(stock_name)
         await websocket.send_text(f"{stock_name} --{i*10}")
-        # await asyncio.sleep(10)
+        await asyncio.sleep(10)
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 

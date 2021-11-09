@@ -5,14 +5,14 @@ import asyncio
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA' 
 
-def get_info(name):
+async def get_info(name):
     # name="VHM"
     # print(name)
     url = f"https://bgapidatafeed.vps.com.vn/getliststockdata/{name}"
     # for i in name:
     #     url.join(i+",")
     try:
-        r = requests.get(url)
+        r = await requests.get(url)
         x = json.loads(r.text)
         result = []
         for i in x:
