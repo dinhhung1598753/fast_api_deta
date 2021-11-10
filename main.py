@@ -1,10 +1,12 @@
-from fastapi import FastAPI, WebSocket, Request
+from typing import Text
+from fastapi import FastAPI, WebSocket, Request, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 import requests
 import time
 from get_stock_info import  get_info
 import asyncio
 import json
+import threading
 
 app = FastAPI()
 
@@ -23,7 +25,7 @@ html = """
         <ul id='messages'>
         </ul>
         <script>
-            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/GVR");
+            var ws = new WebSocket("ws://127.0.0.1:8000/ws/GVR");
             ws.onmessage = function(evt) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -31,7 +33,7 @@ html = """
                 message.appendChild(content)
                 messages.appendChild(message)
             };
-            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/BSR");
+            var ws = new WebSocket("ws://127.0.0.1:8000/ws/BSR");
             ws.onmessage = function(evt) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -39,7 +41,7 @@ html = """
                 message.appendChild(content)
                 messages.appendChild(message)
             };
-            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/MBS");
+            var ws = new WebSocket("ws://127.0.0.1:8000/ws/MBS");
             ws.onmessage = function(evt) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -48,7 +50,7 @@ html = """
                 messages.appendChild(message)
             };
             
-            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/VIC");
+            var ws = new WebSocket("ws://127.0.0.1:8000/ws/VIC");
             ws.onmessage = function(evt) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -72,7 +74,19 @@ html = """
     </body>
 </html>
 """
+class MessageManager:
+    def __init__(self, websocket: WebSocket, stock_name: str):
+        self.websocket = websocket
+        self.stock_name = stock_name
+        self.thread = threading.Timer(10, a)
+    def send(self):
+        # send_m(self.websocket, self.stock_name)
+        # socket_send(self.websocket, self.stock_name)
+        self.thread = threading.Timer(10, send_m, args=(self.websocket, self.stock_name)).start()
+    def cancel(self):
+        self.thread.cancel()
 
+    
 
 @app.get("/")
 async def get():
@@ -82,20 +96,43 @@ async def get():
 @app.websocket("/ws/{stock_name}")
 async def websocket_endpoint(websocket: WebSocket, stock_name: str):
     await websocket.accept()
+    message =  MessageManager(websocket, stock_name)
+    try:
+        message.send()
+        # socket_send(websocket, stock_name)
+        while True:
+            # setInterval(10, a)
+            await websocket.receive()
+    except WebSocketDisconnect:
+        # message.cancel()
+        x =1
     # i = 0
-
+    # setInterval(10, send_m(websocket, stock_name))
     # asyncio.get_event_loop().run_until_complete(alive())
-    await send_m(websocket, stock_name)
+    # threading.Timer(10, a).start()
+    
+def a():
+    print(time.localtime())
 
-async def send_m(websocket: WebSocket, stock_name: str):
-    i=0
+def send_m(websocket: WebSocket, stock_name: str):
+    i =0
     while True:
         i+=1
-        # data = await websocket.receive_text()
-        # await websocket.send_text(get_info(stock_name))
-        await get_info(stock_name)
-        await websocket.send_text(f"{stock_name} --{i*10}")
-        await asyncio.sleep(10)
+        get_info(stock_name)
+        asyncio.run(websocket.send_text(f"{stock_name} --{i}"))
+        time.sleep(10)
+    # for i in range(10):
+    #     get_info(stock_name)
+    #     await websocket.send_text(f"{stock_name} --{time.localtime()}")
+    #     time.sleep(10)
+
+
+# def socket_send(websocket: WebSocket, stock_name: str):
+#     # loop = asyncio.get_event_loop()
+#     loop = asyncio.new_event_loop()
+#     asyncio.set_event_loop(loop)
+#     loop.run_until_complete(send_m(websocket, stock_name))
+#     loop.close()
 
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
