@@ -104,8 +104,7 @@ async def websocket_endpoint(websocket: WebSocket, stock_name: str):
             # setInterval(10, a)
             await websocket.receive()
     except WebSocketDisconnect:
-        # message.cancel()
-        x =1
+        message.cancel()
     # i = 0
     # setInterval(10, send_m(websocket, stock_name))
     # asyncio.get_event_loop().run_until_complete(alive())
@@ -134,13 +133,14 @@ def send_m(websocket: WebSocket, stock_name: str):
 #     loop.run_until_complete(send_m(websocket, stock_name))
 #     loop.close()
 
+
 TOKEN = '2120867713:AAF7y9-CqPx0-ZI6MVSARkIv342N0TULTSA'  # Telegram Bot API Key
 
 # message = ""
 # gl_chat_id = ""
 # gl_mess = ""
 
-async def send_mess(chat_id,mess:str):
+def send_mess(chat_id,mess:str):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
 
     if "checking" in mess:
@@ -159,7 +159,8 @@ async def send_mess(chat_id,mess:str):
         'Content-Type': 'application/json'
         }
         response = requests.request("POST", url, headers=headers, data=payload)
-        await check_limit_price(txt[1], txt[0], chat_id)
+        threading.Timer(5, check_limit_price, args=(txt[1], txt[0], chat_id)).start()
+        # await check_limit_price(txt[1], txt[0], chat_id)
         return
         
     else:
@@ -182,7 +183,7 @@ async def recWebHook(req: Request):
     try:
         id = body['message']['chat']['id']
         sender_text = body['message']['text']
-        await send_mess(id,mess=sender_text)
+        send_mess(id,mess=sender_text)
 
         # await send_mess(123, "GVR limit 40.90")
     except: 
@@ -190,20 +191,29 @@ async def recWebHook(req: Request):
     
 
 
-async def check_limit_price(price:str, name:str, chat_id):
+def check_limit_price(price:str, name:str, chat_id):
     url = f"https://bgapidatafeed.vps.com.vn/getliststockdata/{name}"
     # for i in name:
     #     url.join(i+",")
     i=0
     while True:
-        if message == "clear":
-            return
-
         try:
             i+=1
             r = requests.get(url)
             x = json.loads(r.text)
             last_price = float(x[0]['lastPrice'])
+
+            mes_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+            payload = json.dumps({
+                    "chat_id": chat_id,
+                    "text": f"price = {last_price}"
+                    })
+                    # print(payload)
+            headers = {
+                    'Content-Type': 'application/json'
+                    }
+
+            response = requests.request("POST", mes_url, headers=headers, data=payload)
             
             now_price = 0.0
             if i == 1:
@@ -270,7 +280,6 @@ async def check_limit_price(price:str, name:str, chat_id):
                     response = requests.request("POST", mes_url, headers=headers, data=payload)
                     break
             
-            await asyncio.sleep(10)
             
         except:
             return f"error name warrning price :{name}"
