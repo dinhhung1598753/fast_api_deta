@@ -3,7 +3,7 @@ from fastapi import FastAPI, WebSocket, Request, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 import requests
 import time
-from get_stock_info import  get_info
+from get_stock_info import  get_info, get_info_json
 import asyncio
 import json
 import threading
@@ -117,8 +117,8 @@ def send_m(websocket: WebSocket, stock_name: str):
     i =0
     while True:
         i+=1
-        get_info(stock_name)
-        asyncio.run(websocket.send_text(f"{stock_name} --{i}"))
+        
+        asyncio.run(websocket.send_text(get_info_json(stock_name)))
         time.sleep(10)
     # for i in range(10):
     #     get_info(stock_name)
