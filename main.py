@@ -25,7 +25,7 @@ html = """
         <ul id='messages'>
         </ul>
         <script>
-            var ws = new WebSocket("ws://127.0.0.1:8000/ws/GVR");
+            var ws = new WebSocket("wss://fastapisocket.herokuapp.com/ws/GVR");
             ws.onmessage = function(evt) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -118,7 +118,7 @@ def send_m(websocket: WebSocket, stock_name: str):
     while True:
         i+=1
         
-        asyncio.run(websocket.send_text(get_info_json(stock_name)))
+        asyncio.run(websocket.send_json(get_info_json(stock_name)))
         time.sleep(10)
     # for i in range(10):
     #     get_info(stock_name)
