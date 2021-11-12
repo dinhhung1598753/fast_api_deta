@@ -21,3 +21,18 @@ def get_info(name):
     except:
         return f"error name :{name}"
 
+
+
+def get_info_json(name):
+    # name="VHM"
+    # print(name)
+    url = f"https://bgapidatafeed.vps.com.vn/getliststockdata/{name}"
+    # for i in name:
+    #     url.join(i+",")
+    try:
+        r = requests.get(url)
+        # x = json.loads(r.text)
+        return json.loads(r.text)
+    except:
+        return f"error name :{name}"
+
