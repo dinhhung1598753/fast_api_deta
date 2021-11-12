@@ -80,9 +80,10 @@ class MessageManager:
         self.stock_name = stock_name
         self.thread = threading.Timer(10, a)
     def send(self):
-        # send_m(self.websocket, self.stock_name)
+        
         # socket_send(self.websocket, self.stock_name)
         self.thread = threading.Timer(10, send_m, args=(self.websocket, self.stock_name)).start()
+        send_m(self.websocket, self.stock_name)
     def cancel(self):
         self.thread.cancel()
 
