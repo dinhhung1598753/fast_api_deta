@@ -32,7 +32,7 @@ def get_info_json(name):
     try:
         r = requests.get(url)
         # x = json.loads(r.text)
-        return f"{json.loads(r.text)[0]}"
+        return json.loads(r.text)[0]
     except:
         return f"error name :{name}"
 
